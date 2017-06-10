@@ -4,6 +4,7 @@ import "github.com/rctyler/todoapp/src/common/interfaces"
 
 // TodoService provides functionality to get, create, update/patch, and delete todo reminders
 type TodoService struct {
+	cacheService services.ICacheService
 }
 
 // Todo is a struct that describes a TODO reminder
@@ -14,14 +15,18 @@ type Todo struct {
 
 // NewTodoService creates a new Todo service
 func NewTodoService(cacheService services.ICacheService) *TodoService {
-	return new(TodoService)
+	todoService := new(TodoService)
+	todoService.cacheService = cacheService
+	return todoService
 }
 
 // GetAll Todo objects
 func (svc TodoService) GetAll() []Todo {
+	message := svc.cacheService.Get()
+
 	return []Todo{
 		Todo{ID: "12345", IsCompleted: true},
-		Todo{ID: "67890", IsCompleted: false}}
+		Todo{ID: message, IsCompleted: false}}
 }
 
 // Add Todo objects
