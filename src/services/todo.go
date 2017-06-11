@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/rctyler/todoapp/src/shared/errors"
 	"github.com/rctyler/todoapp/src/shared/interfaces"
 	"github.com/rctyler/todoapp/src/shared/types"
 	"github.com/satori/go.uuid"
@@ -19,19 +20,17 @@ func NewTodoService(cacheService interfaces.ICacheService) *TodoService {
 }
 
 // Add Todo objectstypes.
-func (svc TodoService) Add(todo types.Todo) types.Todo {
+func (svc TodoService) Add(todo types.Todo) (types.Todo, *customErrors.Error) {
 	todo.ID = uuid.NewV1().String()
-	todo = svc.cacheService.Set(todo.ID, todo)
-	return todo
+	return svc.cacheService.Set(todo.ID, todo)
 }
 
 // Get Todo object
-func (svc TodoService) Get(id string) types.Todo {
+func (svc TodoService) Get(id string) (types.Todo, *customErrors.Error) {
 	return svc.cacheService.Get(id)
 }
 
 // Delete Todo object
-func (svc TodoService) Delete(id string) {
-	svc.cacheService.Delete(id)
-	return
+func (svc TodoService) Delete(id string) *customErrors.Error {
+	return svc.cacheService.Delete(id)
 }

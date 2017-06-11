@@ -1,5 +1,5 @@
 {
-    "redisAddr": "localhost:63779",
+    "redisAddr": "localhost:6379",
     "redisPwd": "",
     "redisDb": 0
 }

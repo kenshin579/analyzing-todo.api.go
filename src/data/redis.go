@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/go-redis/redis"
 	"github.com/rctyler/todoapp/src/data/daos"
+	"github.com/rctyler/todoapp/src/shared/errors"
 	"github.com/rctyler/todoapp/src/shared/types"
 )
 
@@ -27,19 +28,18 @@ func NewRedisCacheService(address string, password string, database int) *RedisC
 }
 
 // Get object from Redis
-func (svc RedisCacheService) Get(key string) types.Todo {
+func (svc RedisCacheService) Get(key string) (types.Todo, *customErrors.Error) {
 	var todoDao daos.Todo
 
 	res, err := svc.client.Get(key).Result()
 	if err == redis.Nil {
-		return types.Todo{}
+		return types.Todo{}, customErrors.New("NOT_FOUND", "Requested TODO not found")
 	} else if err != nil {
-		panic(err)
+		return types.Todo{}, customErrors.New("SERVICE_UNAVAILABLE", err.Error())
 	}
 
-	err = json.Unmarshal([]byte(res), &todoDao)
-	if err != nil {
-		panic(err)
+	if err := json.Unmarshal([]byte(res), &todoDao); err != nil {
+		return types.Todo{}, customErrors.New("INTERNAL_SERVER_ERROR", err.Error())
 	}
 
 	todo := types.Todo{
@@ -49,21 +49,21 @@ func (svc RedisCacheService) Get(key string) types.Todo {
 		When:   todoDao.When,
 	}
 
-	return todo
+	return todo, nil
 }
 
 // Delete object from Redis
-func (svc RedisCacheService) Delete(key string) {
+func (svc RedisCacheService) Delete(key string) *customErrors.Error {
 	_, err := svc.client.Del(key).Result()
 	if err != nil {
-		panic(err)
+		return customErrors.New("SERVICE_UNAVAILABLE", err.Error())
 	}
 
-	return
+	return nil
 }
 
 // Set object in Redis
-func (svc RedisCacheService) Set(key string, obj types.Todo) types.Todo {
+func (svc RedisCacheService) Set(key string, obj types.Todo) (types.Todo, *customErrors.Error) {
 	todoDao := daos.Todo{
 		ID:     obj.ID,
 		TODO:   obj.TODO,
@@ -71,15 +71,15 @@ func (svc RedisCacheService) Set(key string, obj types.Todo) types.Todo {
 		When:   obj.When,
 	}
 
-	b, err := json.Marshal(todoDao)
+	todoJSON, err := json.Marshal(todoDao)
 	if err != nil {
-		panic(err)
+		return types.Todo{}, customErrors.New("INTERNAL_SERVER_ERROR", err.Error())
 	}
 
-	_, err = svc.client.Set(key, string(b), 0).Result()
+	_, err = svc.client.Set(key, string(todoJSON), 0).Result()
 	if err != nil {
-		panic(err)
+		return types.Todo{}, customErrors.New("SERVICE_UNAVAILABLE", err.Error())
 	}
 
-	return obj
+	return obj, nil
 }

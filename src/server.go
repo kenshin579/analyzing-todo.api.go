@@ -47,26 +47,49 @@ func main() {
 				When:   data.When,
 			}
 
-			todo = todoService.Add(todo)
+			todo, err := todoService.Add(todo)
 
-			c.JSON(http.StatusCreated, todo)
+			if err == nil {
+				c.JSON(http.StatusCreated, todo)
+			} else if err.Code() == "SERVICE_UNAVAILABLE" {
+				c.JSON(http.StatusServiceUnavailable, err)
+			} else if err.Code() == "INTERNAL_SERVER_ERROR" {
+				c.JSON(http.StatusInternalServerError, err)
+			} else {
+				c.Status(http.StatusInternalServerError)
+			}
 		})
 
 		v1.GET("/todo/:id", func(c *gin.Context) {
 			id := c.Param("id")
-			todo := todoService.Get(id)
-			if todo.ID != "" {
-				c.JSON(http.StatusOK, todo)
-			} else {
-				c.Status(http.StatusNotFound)
-			}
 
+			todo, err := todoService.Get(id)
+
+			if err == nil {
+				c.JSON(http.StatusOK, todo)
+			} else if err.Code() == "NOT_FOUND" {
+				c.JSON(http.StatusNotFound, err)
+			} else if err.Code() == "SERVICE_UNAVAILABLE" {
+				c.JSON(http.StatusServiceUnavailable, err)
+			} else if err.Code() == "INTERNAL_SERVER_ERROR" {
+				c.JSON(http.StatusInternalServerError, err)
+			} else {
+				c.Status(http.StatusInternalServerError)
+			}
 		})
 
 		v1.DELETE("/todo/:id", func(c *gin.Context) {
 			id := c.Param("id")
-			todoService.Delete(id)
-			c.Status(http.StatusNoContent)
+
+			err := todoService.Delete(id)
+
+			if err == nil {
+				c.Status(http.StatusNoContent)
+			} else if err.Code() == "SERVICE_UNAVAILABLE" {
+				c.JSON(http.StatusServiceUnavailable, err)
+			} else {
+				c.Status(http.StatusInternalServerError)
+			}
 		})
 	}
 
