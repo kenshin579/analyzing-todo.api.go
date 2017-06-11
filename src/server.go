@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"github.com/rctyler/todoapp/src/data"
+	"github.com/rctyler/todoapp/src/dtos"
 	"github.com/rctyler/todoapp/src/services"
+	"github.com/rctyler/todoapp/src/shared/types"
 	"gopkg.in/gin-gonic/gin.v1"
 	"io/ioutil"
 	"net/http"
@@ -34,38 +36,37 @@ func main() {
 
 	v1 := router.Group("/v1")
 	{
-		v1.GET("/todo", func(c *gin.Context) {
-			todos := todoService.GetAll()
-			c.JSON(200, todos)
-		})
-
 		v1.POST("/todo", func(c *gin.Context) {
-			todo := todoService.Add()
-			c.JSON(200, todo)
+			var data dtos.Todo
+
+			c.BindJSON(&data)
+
+			todo := types.Todo{
+				Author: data.Author,
+				TODO:   data.TODO,
+				When:   data.When,
+			}
+
+			todo = todoService.Add(todo)
+
+			c.JSON(http.StatusCreated, todo)
 		})
 
 		v1.GET("/todo/:id", func(c *gin.Context) {
 			id := c.Param("id")
 			todo := todoService.Get(id)
-			c.JSON(200, todo)
-		})
+			if todo.ID != "" {
+				c.JSON(http.StatusOK, todo)
+			} else {
+				c.Status(http.StatusNotFound)
+			}
 
-		v1.PUT("/todo/:id", func(c *gin.Context) {
-			id := c.Param("id")
-			todo := todoService.Update(id)
-			c.JSON(200, todo)
-		})
-
-		v1.PATCH("/todo/:id", func(c *gin.Context) {
-			id := c.Param("id")
-			todo := todoService.Patch(id)
-			c.JSON(200, todo)
 		})
 
 		v1.DELETE("/todo/:id", func(c *gin.Context) {
 			id := c.Param("id")
-			todo := todoService.Delete(id)
-			c.JSON(200, todo)
+			todoService.Delete(id)
+			c.Status(http.StatusNoContent)
 		})
 	}
 
