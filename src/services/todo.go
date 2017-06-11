@@ -7,7 +7,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-// TodoService provides functionality to get, create, update/patch, and delete todo reminders
+// TodoService provides functionality to get, create, and delete TODO objects
 type TodoService struct {
 	cacheService interfaces.ICacheService
 }
@@ -19,18 +19,39 @@ func NewTodoService(cacheService interfaces.ICacheService) *TodoService {
 	return todoService
 }
 
-// Add Todo objectstypes.
+// Add a new TODO object
 func (svc TodoService) Add(todo types.Todo) (types.Todo, *customErrors.Error) {
 	todo.ID = uuid.NewV1().String()
-	return svc.cacheService.Set(todo.ID, todo)
+
+	obj, err := svc.cacheService.Set(todo.ID, todo)
+
+	todo = obj.(types.Todo)
+	if e, ok := err.(*customErrors.Error); ok {
+		return todo, e
+	}
+
+	return todo, nil
 }
 
-// Get Todo object
+// Get TODO object
 func (svc TodoService) Get(id string) (types.Todo, *customErrors.Error) {
-	return svc.cacheService.Get(id)
+	obj, err := svc.cacheService.Get(id)
+
+	todo := obj.(types.Todo)
+	if e, ok := err.(*customErrors.Error); ok {
+		return todo, e
+	}
+
+	return todo, nil
 }
 
-// Delete Todo object
+// Delete TODO object
 func (svc TodoService) Delete(id string) *customErrors.Error {
-	return svc.cacheService.Delete(id)
+	err := svc.cacheService.Delete(id)
+
+	if e, ok := err.(*customErrors.Error); ok {
+		return e
+	}
+
+	return nil
 }

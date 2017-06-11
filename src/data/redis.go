@@ -28,7 +28,7 @@ func NewRedisCacheService(address string, password string, database int) *RedisC
 }
 
 // Get object from Redis
-func (svc RedisCacheService) Get(key string) (types.Todo, *customErrors.Error) {
+func (svc RedisCacheService) Get(key string) (interface{}, error) {
 	var todoDao daos.Todo
 
 	res, err := svc.client.Get(key).Result()
@@ -52,8 +52,8 @@ func (svc RedisCacheService) Get(key string) (types.Todo, *customErrors.Error) {
 	return todo, nil
 }
 
-// Delete object from Redis
-func (svc RedisCacheService) Delete(key string) *customErrors.Error {
+// Delete object in Redis
+func (svc RedisCacheService) Delete(key string) error {
 	_, err := svc.client.Del(key).Result()
 	if err != nil {
 		return customErrors.New("SERVICE_UNAVAILABLE", err.Error())
@@ -63,12 +63,17 @@ func (svc RedisCacheService) Delete(key string) *customErrors.Error {
 }
 
 // Set object in Redis
-func (svc RedisCacheService) Set(key string, obj types.Todo) (types.Todo, *customErrors.Error) {
+func (svc RedisCacheService) Set(key string, obj interface{}) (interface{}, error) {
+	todo, ok := obj.(types.Todo)
+	if !ok {
+		return types.Todo{}, customErrors.New("INTERNAL_SERVER_ERROR", "Generic Redis object cannot be converted to a TODO type")
+	}
+
 	todoDao := daos.Todo{
-		ID:     obj.ID,
-		TODO:   obj.TODO,
-		Author: obj.Author,
-		When:   obj.When,
+		ID:     todo.ID,
+		TODO:   todo.TODO,
+		Author: todo.Author,
+		When:   todo.When,
 	}
 
 	todoJSON, err := json.Marshal(todoDao)

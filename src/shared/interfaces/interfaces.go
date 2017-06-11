@@ -1,13 +1,8 @@
 package interfaces
 
-import (
-	"github.com/rctyler/todoapp/src/shared/errors"
-	"github.com/rctyler/todoapp/src/shared/types"
-)
-
-// ICacheService is an interface for a caching service
+// ICacheService is an interface for a generic caching service. This doesn't need to be as generic as it is, but I wanted to play around with type conversion
 type ICacheService interface {
-	Get(key string) (types.Todo, *customErrors.Error)
-	Delete(key string) *customErrors.Error
-	Set(key string, todo types.Todo) (types.Todo, *customErrors.Error)
+	Get(key string) (interface{}, error)
+	Delete(key string) error
+	Set(key string, obj interface{}) (interface{}, error)
 }
