@@ -93,7 +93,7 @@ func main() {
 		})
 	}
 
-	router.Run()
+	router.Run(":8080")
 }
 
 func getConfigSettings(location string) (config, error) {
