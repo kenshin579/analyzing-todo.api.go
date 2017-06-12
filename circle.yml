@@ -1,6 +1,0 @@
-dependencies:
-  pre:
-    - go get ./...
-  override:
-    - cd src
-    - go build
