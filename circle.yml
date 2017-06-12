@@ -1,8 +1,7 @@
-version: 2
-jobs:
-  build:
-    working_directory: /go/src/github.com/rctyler/todo.api.go/src
-    steps:
-      - checkout
-      - run: go get ./...
-      - run: go build main.go
+machine:
+  environment:
+    IMPORT_PATH: "github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+
+dependencies:
+  pre:
+    - go get ./...
