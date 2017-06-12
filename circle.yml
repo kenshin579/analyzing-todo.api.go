@@ -17,4 +17,4 @@ dependencies:
   override:
     - go get ./...
     - cd $GOPATH/src/$IMPORT_PATH/src
-    - go build main.go
+    - go build
