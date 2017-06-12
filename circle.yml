@@ -15,8 +15,8 @@ checkout:
 
 dependencies:
   override:
-    - go get ./...
-    - cd $GOPATH/src/$IMPORT_PATH/src && go build
+    - go get -v ./...
+    - cd $GOPATH/src/$IMPORT_PATH/src && go build -v
 
 test:
   override:
