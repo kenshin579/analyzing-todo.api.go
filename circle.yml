@@ -16,5 +16,5 @@ checkout:
 dependencies:
   override:
     - go get ./...
-    - cd github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/src
+    - cd $GOPATH/src/$IMPORT_PATH"/src
     - go build main.go
