@@ -18,6 +18,6 @@ dependencies:
     - go get ./...
     - cd $GOPATH/src/$IMPORT_PATH/src && go build
 
-  test:
-    override:
-      - cd $GOPATH/src/$IMPORT_PATH/tests && go test
+test:
+  override:
+    - cd $GOPATH/src/$IMPORT_PATH/tests && go test
