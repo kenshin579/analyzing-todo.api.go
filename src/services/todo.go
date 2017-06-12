@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/rctyler/todoapp/src/shared/errors"
-	"github.com/rctyler/todoapp/src/shared/interfaces"
-	"github.com/rctyler/todoapp/src/shared/types"
+	"github.com/rctyler/todo.api.go/src/shared/errors"
+	"github.com/rctyler/todo.api.go/src/shared/interfaces"
+	"github.com/rctyler/todo.api.go/src/shared/types"
 	"github.com/satori/go.uuid"
 )
 

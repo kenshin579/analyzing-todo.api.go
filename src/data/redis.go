@@ -3,9 +3,9 @@ package data
 import (
 	"encoding/json"
 	"github.com/go-redis/redis"
-	"github.com/rctyler/todoapp/src/data/daos"
-	"github.com/rctyler/todoapp/src/shared/errors"
-	"github.com/rctyler/todoapp/src/shared/types"
+	"github.com/rctyler/todo.api.go/src/data/daos"
+	"github.com/rctyler/todo.api.go/src/shared/errors"
+	"github.com/rctyler/todo.api.go/src/shared/types"
 )
 
 // RedisCacheService implements ICacheService and communitcates with Redis

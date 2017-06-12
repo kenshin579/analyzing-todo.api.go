@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/rctyler/todoapp/src/data"
-	"github.com/rctyler/todoapp/src/dtos"
-	"github.com/rctyler/todoapp/src/services"
-	"github.com/rctyler/todoapp/src/shared/types"
+	"github.com/rctyler/todo.api.go/src/data"
+	"github.com/rctyler/todo.api.go/src/dtos"
+	"github.com/rctyler/todo.api.go/src/services"
+	"github.com/rctyler/todo.api.go/src/shared/types"
 	"gopkg.in/gin-gonic/gin.v1"
 	"io/ioutil"
 	"net/http"
