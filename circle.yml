@@ -1,23 +1,24 @@
 machine:
   services:
-    - docker
+    - docker 
   environment:
     GOPATH: /home/ubuntu/.go_workspace
     IMPORT_PATH: github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-
 general:
   build_dir: ../.go_workspace/src/$IMPORT_PATH
-
 checkout:
   post:
     - mkdir -p "$GOPATH/src/$IMPORT_PATH"
     - rsync -azC --delete $HOME/$CIRCLE_PROJECT_REPONAME/ $GOPATH/src/$IMPORT_PATH/
-
 dependencies:
   override:
     - go get -v ./...
     - cd $GOPATH/src/$IMPORT_PATH/src && go build -v
-
 test:
   override:
     - cd $GOPATH/src/$IMPORT_PATH/tests && go test
+  post:
+    - cd $GOPATH/src/$IMPORT_PATH/src && docker build -t rctyler/todo.api.go .
+    - docker save rctyler/todo.api.go | gzip > $CIRCLE_ARTIFACTS/todo-api-go.tar.gz
+    - cd $GOPATH/src/$IMPORT_PATH/deploy && cp docker-compose.yml $CIRCLE_ARTIFACTS/docker-compose.yml
+
