@@ -18,7 +18,7 @@ test:
   override:
     - cd $GOPATH/src/$IMPORT_PATH/tests && go test
   post:
-    - cd $GOPATH/src/$IMPORT_PATH/src && docker build -t rctyler/todo.api.go .
+    - cd $GOPATH/src/$IMPORT_PATH && docker build -t rctyler/todo.api.go .
     - docker save rctyler/todo.api.go | gzip > $CIRCLE_ARTIFACTS/todo-api-go.tar.gz
-    - cd $GOPATH/src/$IMPORT_PATH/deploy && cp docker-compose.yml $CIRCLE_ARTIFACTS/docker-compose.yml
+    - cp ./deploy/docker-compose.yml $CIRCLE_ARTIFACTS/docker-compose.yml
 
