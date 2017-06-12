@@ -5,6 +5,7 @@ import (
 	"github.com/rctyler/todo.api.go/src/data"
 	"github.com/rctyler/todo.api.go/src/dtos"
 	"github.com/rctyler/todo.api.go/src/services"
+	"github.com/rctyler/todo.api.go/src/shared/errors"
 	"github.com/rctyler/todo.api.go/src/shared/types"
 	"gopkg.in/gin-gonic/gin.v1"
 	"io/ioutil"
@@ -51,9 +52,9 @@ func main() {
 
 			if err == nil {
 				c.JSON(http.StatusCreated, todo)
-			} else if err.Code() == "SERVICE_UNAVAILABLE" {
+			} else if err.Code() == customErrors.ServiceUnavailableErrorCode {
 				c.JSON(http.StatusServiceUnavailable, err)
-			} else if err.Code() == "INTERNAL_SERVER_ERROR" {
+			} else if err.Code() == customErrors.InternalServerErrorCode {
 				c.JSON(http.StatusInternalServerError, err)
 			} else {
 				c.Status(http.StatusInternalServerError)
@@ -67,11 +68,11 @@ func main() {
 
 			if err == nil {
 				c.JSON(http.StatusOK, todo)
-			} else if err.Code() == "NOT_FOUND" {
+			} else if err.Code() == customErrors.NotFoundErrorCode {
 				c.JSON(http.StatusNotFound, err)
-			} else if err.Code() == "SERVICE_UNAVAILABLE" {
+			} else if err.Code() == customErrors.ServiceUnavailableErrorCode {
 				c.JSON(http.StatusServiceUnavailable, err)
-			} else if err.Code() == "INTERNAL_SERVER_ERROR" {
+			} else if err.Code() == customErrors.InternalServerErrorCode {
 				c.JSON(http.StatusInternalServerError, err)
 			} else {
 				c.Status(http.StatusInternalServerError)
@@ -85,7 +86,7 @@ func main() {
 
 			if err == nil {
 				c.Status(http.StatusNoContent)
-			} else if err.Code() == "SERVICE_UNAVAILABLE" {
+			} else if err.Code() == customErrors.ServiceUnavailableErrorCode {
 				c.JSON(http.StatusServiceUnavailable, err)
 			} else {
 				c.Status(http.StatusInternalServerError)

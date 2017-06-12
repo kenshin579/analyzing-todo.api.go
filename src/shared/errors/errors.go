@@ -23,3 +23,12 @@ func (err *Error) Error() string {
 func (err *Error) Code() string {
 	return err.ErrorCode
 }
+
+// NotFoundErrorCode will be translated to a 404 HTTP response code
+const NotFoundErrorCode string = "NOT_FOUND"
+
+// InteralServerErrorCode willl be translated to a 500 HTTP response code
+const InternalServerErrorCode string = "INTERNAL_SERVER_ERROR"
+
+// ServiceUnavailableErrorCode will be translated to a 503 response code
+const ServiceUnavailableErrorCode string = "SERVICE_UNAVAILABLE"

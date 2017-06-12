@@ -33,13 +33,13 @@ func (svc RedisCacheService) Get(key string) (interface{}, error) {
 
 	res, err := svc.client.Get(key).Result()
 	if err == redis.Nil {
-		return types.Todo{}, customErrors.New("NOT_FOUND", "Requested TODO not found")
+		return types.Todo{}, customErrors.New(customErrors.NotFoundErrorCode, "Requested TODO not found")
 	} else if err != nil {
-		return types.Todo{}, customErrors.New("SERVICE_UNAVAILABLE", err.Error())
+		return types.Todo{}, customErrors.New(customErrors.ServiceUnavailableErrorCode, err.Error())
 	}
 
 	if err := json.Unmarshal([]byte(res), &todoDao); err != nil {
-		return types.Todo{}, customErrors.New("INTERNAL_SERVER_ERROR", err.Error())
+		return types.Todo{}, customErrors.New(customErrors.InternalServerErrorCode, err.Error())
 	}
 
 	todo := types.Todo{
@@ -56,7 +56,7 @@ func (svc RedisCacheService) Get(key string) (interface{}, error) {
 func (svc RedisCacheService) Delete(key string) error {
 	_, err := svc.client.Del(key).Result()
 	if err != nil {
-		return customErrors.New("SERVICE_UNAVAILABLE", err.Error())
+		return customErrors.New(customErrors.ServiceUnavailableErrorCode, err.Error())
 	}
 
 	return nil
