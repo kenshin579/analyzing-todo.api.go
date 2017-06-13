@@ -4,6 +4,7 @@ machine:
   environment:
     GOPATH: /home/ubuntu/.go_workspace
     IMPORT_PATH: github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+    COVERALLS_REPO_TOKEN: 8Hfy8Mo75wEcOzyzXvX6vfotlV2oQBiY2
 general:
   build_dir: ../.go_workspace/src/$IMPORT_PATH
 checkout:
@@ -17,7 +18,7 @@ dependencies:
     - cd $GOPATH/src/$IMPORT_PATH/src && go build -v
 test:
   override:
-    - cd $GOPATH/src/$IMPORT_PATH/tests && go test
+    - cd $GOPATH/src/$IMPORT_PATH/tests && $GOPATH/bin/goveralls -v -service=circle-ci -repotoken $COVERALLS_REPO_TOKEN
   post:
     - cd $GOPATH/src/$IMPORT_PATH && docker build -t rctyler/todo.api.go .
     - docker save rctyler/todo.api.go | gzip > $CIRCLE_ARTIFACTS/todo-api-go.tar.gz
