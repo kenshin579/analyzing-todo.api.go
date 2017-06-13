@@ -4,7 +4,7 @@ machine:
   environment:
     GOPATH: /home/ubuntu/.go_workspace
     IMPORT_PATH: github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-    COVERALLS_TOKEN: 5cerkdkHxbIULPy8AEt18gXXOqxM4KEDx
+    COVERALLS_TOKEN: 8Hfy8Mo75wEcOzyzXvX6vfotlV2oQBiY2
 general:
   build_dir: ../.go_workspace/src/$IMPORT_PATH
 checkout:
