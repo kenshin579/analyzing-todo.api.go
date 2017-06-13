@@ -2,13 +2,16 @@
 # todo.api.go
 A simple TODO API built with Golang and Gin (this is an introductory project to learn Go). It is backed by RedisDB, and built in Docker.
 ## Install dependencies
+In the project's root directory, run the following commands:
 1. `go get ./...`
 ## Build
 In the project's root directory, run the following commands:
 1. `cd src`
 2. `go build`
 ## Run tests
-1. `go test`
+In the project's root directory, run the following commands:
+1. `cd tests`
+2. `go test`
 ## Deploy locally
 In the project's root directory, run the following commands:
 1. `docker build -t rctyler/todo.api.go .`
