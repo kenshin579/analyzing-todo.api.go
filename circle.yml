@@ -19,7 +19,7 @@ dependencies:
     - cd $GOPATH/src/$IMPORT_PATH/src && go build -v
 test:
   override:
-    - cd $GOPATH/src/$IMPORT_PATH/tests && go test -v -covermode=count -coverprofile=coverage.out
+    - cd $GOPATH/src/$IMPORT_PATH/tests && go test -v -cover -covermode=count -coverprofile=coverage.out
     - cd $GOPATH/src/$IMPORT_PATH/tests && $GOPATH/bin/goveralls -v -coverprofile=coverage.out -service=circle-ci -repotoken $COVERALLS_REPO_TOKEN
   post:
     - cd $GOPATH/src/$IMPORT_PATH && docker build -t rctyler/todo.api.go .
