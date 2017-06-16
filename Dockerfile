@@ -2,7 +2,7 @@ FROM golang
 
 ADD . /go/src/github.com/rctyler/todo.api.go
 
-RUN go get ./...
+RUN go get -v -d ./...
 
 EXPOSE 8080
 
