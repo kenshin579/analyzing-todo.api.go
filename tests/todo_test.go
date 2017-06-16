@@ -35,7 +35,7 @@ func TestGetError(t *testing.T) {
 	_, err := todoService.Get(id)
 
 	// ASSERT
-	if err == nil || err.Error() != "ERROR: MockCacheService.Get" {
+	if err == nil || (err.Code() != "Error" && err.Error() != "ERROR: MockCacheService.Get") {
 		t.Error()
 	}
 }
@@ -75,7 +75,7 @@ func TestAddError(t *testing.T) {
 	_, err := todoService.Add(todo)
 
 	// ASSERT
-	if err == nil || err.Error() != "ERROR: MockCacheService.Set" {
+	if err == nil || (err.Code() != "Error" && err.Error() != "ERROR: MockCacheService.Set") {
 		t.Error()
 	}
 }
@@ -107,7 +107,7 @@ func TestDeleteError(t *testing.T) {
 	err := todoService.Delete(id)
 
 	// ASSERT
-	if err == nil || err.Error() != "ERROR: MockCacheService.Delete" {
+	if err == nil || (err.Code() != "Error" && err.Error() != "ERROR: MockCacheService.Delete") {
 		t.Error()
 	}
 }
