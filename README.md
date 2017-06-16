@@ -1,6 +1,6 @@
 [![circleci](https://img.shields.io/badge/build-circleci-blue.svg)](https://circleci.com/gh/rctyler/todo.api.go)
 [![CircleCI](https://img.shields.io/circleci/project/github/rctyler/todo.api.go/master.svg)](https://circleci.com/gh/rctyler/todo.api.go?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/rctyler/todo.api.go/badge.svg)](https://coveralls.io/github/rctyler/todo.api.go)
+[![Coveralls branch](https://img.shields.io/coveralls/jekyll/jekyll/master.svg)]()
 # todo.api.go
 A simple TODO API built with Golang and Gin (this is an introductory project to learn Go). It is backed by RedisDB, and built in Docker.
 ## Install dependencies
