@@ -1,4 +1,4 @@
-package todo_test
+package tests
 
 import (
 	"testing"
