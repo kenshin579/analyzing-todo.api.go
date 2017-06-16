@@ -14,6 +14,11 @@ In the project's root directory, run the following commands:
 In the project's root directory, run the following commands:
 1. `cd tests`
 2. `go test`
+## Run code coverage
+In the project's root directory, run the following commands:
+1. `$GOPATH/bin/goveralls -v -service=circle-ci -repotoken 3QBLcfjGKHMtQevf0Q0lkADeRpUdscmdS -ignore src/main.go,src/data/redis.go,tests/mocks/mocks.go`
+
+**2017-6-16 NOTE:** There is a bug somewhere in my CI environment where running code coverage on the build server is _not_ publishing to coveralls.io. However, running the command on the source code locally works.
 ## Deploy locally
 In the project's root directory, run the following commands:
 1. `docker build -t rctyler/todo.api.go .`
